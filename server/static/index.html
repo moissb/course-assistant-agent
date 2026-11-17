@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>课程助手 Agent · Course Assistant</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--ink:#1f2937;--muted:#6b7280;--line:#e5e7eb;--blue:#2563eb;--blue-bg:#eff6ff;--green:#059669;--green-bg:#ecfdf5;--red:#dc2626;--amber:#d97706}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
+header{background:#fff;border-bottom:1px solid var(--line);padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:17px;margin:0;font-weight:650}
+.badge{font-size:12px;padding:3px 10px;border-radius:999px;background:var(--blue-bg);color:var(--blue);border:1px solid #bfdbfe}
+.badge.ok{background:var(--green-bg);color:var(--green);border-color:#a7f3d0}
+.spacer{flex:1}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:7px 13px}
+button:hover{border-color:var(--blue);color:var(--blue)}
+button.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+button.primary:hover{background:#1d4ed8;color:#fff}
+button:disabled{opacity:.55;cursor:not-allowed}
+.wrap{max-width:1320px;margin:18px auto;padding:0 18px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px}
+@media(max-width:960px){.wrap{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.chat{display:flex;flex-direction:column;height:calc(100vh - 110px);min-height:560px;overflow:hidden}
+.chat-head{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chat-head span{font-size:12px;color:var(--muted)}
+.chip{font-size:12px;padding:4px 10px;border:1px solid #dbeafe;background:var(--blue-bg);color:var(--blue);border-radius:999px}
+.chip:hover{background:#dbeafe}
+#messages{flex:1;overflow:auto;padding:20px 22px;display:flex;flex-direction:column;gap:16px}
+.msg{display:flex;gap:10px;max-width:88%}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.avatar{width:30px;height:30px;border-radius:8px;background:var(--blue-bg);color:var(--blue);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.msg.user .avatar{background:#eef2ff;color:#4f46e5}
+.bubble{background:#f9fafb;border:1px solid var(--line);border-radius:10px;padding:10px 14px;white-space:pre-wrap;word-break:break-word}
+.msg.user .bubble{background:var(--blue);border-color:var(--blue);color:#fff}
+.bubble.meta{font-size:12px;color:var(--muted);background:#fff}
+.composer{border-top:1px solid var(--line);padding:12px 16px;display:flex;gap:10px;align-items:flex-end}
+textarea{flex:1;resize:none;height:46px;max-height:140px;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font:inherit;outline:none;background:#fff}
+textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #dbeafe}
+.trace{padding:16px;height:calc(100vh - 110px);min-height:560px;overflow:auto}
+.trace h2{font-size:14px;margin:0 0 12px;font-weight:650;display:flex;align-items:center;gap:8px}
+.trace h3{font-size:12px;color:var(--muted);margin:18px 0 8px;text-transform:uppercase;letter-spacing:.06em}
+.kv{display:grid;grid-template-columns:78px 1fr;gap:6px 10px;font-size:12.5px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;word-break:break-all}
+.item{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:7px;font-size:12px;background:#fcfcfd}
+.item b{color:var(--blue)}
+.item .ok{color:var(--green)}
+.item .fail{color:var(--red)}
+.item code{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:#374151;background:#f3f4f6;padding:1px 4px;border-radius:3px}
+.timeline{border-left:2px solid var(--line);margin-left:6px;padding-left:14px}
+.timeline div{position:relative;margin-bottom:10px;font-size:12px}
+.timeline div::before{content:"";position:absolute;left:-19px;top:7px;width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.timeline small{display:block;color:var(--muted);word-break:break-all}
+.empty{color:var(--muted);font-size:12.5px}
+</style>
+</head>
+<body>
+<header>
+  <h1>课程助手 Agent</h1>
+  <span class="badge" id="mode">检测中...</span>
+  <span class="badge ok" id="health">知识库加载中</span>
+  <span class="spacer"></span>
+  <button id="newSession">新建会话</button>
+</header>
+
+<div class="wrap">
+  <section class="card chat">
+    <div class="chat-head">
+      <span>试试：</span>
+      <button class="chip">我的高等数学成绩是多少？</button>
+      <button class="chip">什么是RAG检索增强生成？</button>
+      <button class="chip">计算 (95+93+92)/3</button>
+      <button class="chip">缓考怎么申请？</button>
+    </div>
+    <div id="messages">
+      <div class="msg assistant"><div class="avatar">AI</div><div class="bubble">你好，我是课程助手。可以问课程知识点、成绩、教务流程，也可以让我做简单计算。所有回答都基于知识库和工具结果，并标注出处。</div></div>
+    </div>
+    <div class="composer">
+      <textarea id="input" placeholder="输入问题，按 Enter 发送（Shift+Enter 换行）"></textarea>
+      <button class="primary" id="send">发送</button>
+    </div>
+  </section>
+
+  <aside class="card trace">
+    <h2>运行轨迹 <span class="badge" id="status">待命</span></h2>
+    <div id="trace"><p class="empty">发送问题后，这里会显示意图识别、工具调用、引用来源与节点事件。</p></div>
+  </aside>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = {sessionId: null, busy: false};
+
+function mk(tag, cls, text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;}
+
+function addMsg(role, text){
+  const wrap=mk('div','msg '+role);
+  wrap.appendChild(mk('div','avatar',role==='user'?'我':'AI'));
+  const bubble=mk('div','bubble',text);
+  wrap.appendChild(bubble);
+  $('messages').appendChild(wrap);
+  $('messages').scrollTop=$('messages').scrollHeight;
+  return bubble;
+}
+
+async function init(){
+  try{
+    const res=await fetch('/api/health');
+    const data=await res.json();
+    $('mode').textContent = data.mode==='live' ? 'DeepSeek 实时模型' : '离线 Mock 模式';
+    $('health').textContent = `知识库 ${data.docs} 段 / 工具 ${data.tools.length} 个`;
+  }catch(e){$('health').textContent='服务不可用';}
+}
+
+async function send(){
+  if(state.busy) return;
+  const question=$('input').value.trim();
+  if(!question) return;
+  state.busy=true;
+  $('send').disabled=true;
+  $('status').textContent='运行中';
+  $('input').value='';
+  addMsg('user',question);
+  const bubble=addMsg('assistant','');
+  bubble.textContent='思考中...';
+
+  try{
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({question,session_id:state.sessionId,stream:true})});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const reader=res.body.getReader(), decoder=new TextDecoder();
+    let buffer='', started=false;
+    while(true){
+      const {done,value}=await reader.read();
+      if(done) break;
+      buffer+=decoder.decode(value,{stream:true});
+      const parts=buffer.split('\n\n');
+      buffer=parts.pop();
+      for(const part of parts){
+        const line=part.split('\n').find(l=>l.startsWith('data: '));
+        if(!line) continue;
+        let data;
+        try{data=JSON.parse(line.slice(6));}catch(e){continue;}
+        if(data.delta){if(!started){bubble.textContent='';started=true;}bubble.textContent+=data.delta;}
+        if(data.event==='start'){state.sessionId=data.session_id;}
+        if(data.event==='done'){
+          state.sessionId=data.result.session_id;
+          bubble.textContent=data.result.answer;
+          renderTrace(data.result);
+          $('status').textContent=data.result.success?'完成':'证据不足';
+        }
+      }
+    }
+    if(!started) bubble.textContent='（未收到回答内容）';
+  }catch(err){
+    bubble.textContent='请求失败：'+err.message;
+    $('status').textContent='出错';
+  }finally{
+    state.busy=false;
+    $('send').disabled=false;
+    $('messages').scrollTop=$('messages').scrollHeight;
+  }
+}
+
+function renderTrace(r){
+  const root=$('trace');root.innerHTML='';
+  const dl=mk('dl','kv');
+  [['意图',r.intent],['决策理由',r.thought],['耗时',r.latency_ms+' ms'],['首字',r.first_token_ms+' ms'],['会话',r.session_id]].forEach(([k,v])=>{
+    dl.appendChild(mk('dt','',k));dl.appendChild(mk('dd','',v||'-'));
+  });
+  root.appendChild(dl);
+
+  root.appendChild(mk('h3','','工具调用'));
+  if(!r.tool_trace.length) root.appendChild(mk('p','empty','本次未调用工具'));
+  r.tool_trace.forEach(t=>{
+    const item=mk('div','item');
+    item.appendChild(mk('b','',t.name+' '));
+    item.appendChild(mk('span',t.success?'ok':'fail',t.success?'✓ 成功':'✗ 失败'));
+    item.appendChild(mk('div','', '耗时 '+t.elapsed_ms+' ms　参数 '+JSON.stringify(t.arguments)));
+    item.appendChild(mk('code','',t.content.slice(0,160)+(t.content.length>160?'...':'')));
+    root.appendChild(item);
+  });
+
+  root.appendChild(mk('h3','','引用来源'));
+  if(!r.citations.length) root.appendChild(mk('p','empty','本次没有知识库引用'));
+  r.citations.forEach(c=>{
+    const item=mk('div','item');
+    item.appendChild(mk('b','',`[${c.index}] ${c.title} `));
+    item.appendChild(mk('span','','相关度 '+c.score));
+    item.appendChild(mk('div','',c.source));
+    root.appendChild(item);
+  });
+
+  root.appendChild(mk('h3','','节点事件'));
+  const tl=mk('div','timeline');
+  r.events.forEach(e=>{
+    const node=mk('div','',e.kind+' · '+e.name);
+    node.appendChild(mk('small','',e.detail));
+    tl.appendChild(node);
+  });
+  root.appendChild(tl);
+}
+
+$('send').addEventListener('click',send);
+$('input').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}});
+document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{$('input').value=b.textContent;send();}));
+$('newSession').addEventListener('click',async()=>{
+  try{await fetch('/api/reset',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({session_id:state.sessionId})});}catch(e){}
+  state.sessionId=null;
+  $('messages').innerHTML='';
+  $('trace').innerHTML='<p class="empty">发送问题后，这里会显示意图识别、工具调用、引用来源与节点事件。</p>';
+  $('status').textContent='待命';
+  addMsg('assistant','已新建会话，请问有什么可以帮你？');
+});
+init();
+</script>
+</body>
+</html>

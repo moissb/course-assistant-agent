@@ -1,0 +1,17 @@
+大数据指数据量规模超出传统数据库处理能力的数据集合，通常用 4V 描述：Volume 数据量大、Variety 类型多样、Velocity 产生速度快、Value 价值密度低。
+
+Hadoop 是分布式系统基础架构，核心组件包括 HDFS 分布式文件系统和 MapReduce 分布式计算框架。HDFS 采用主从架构，NameNode 管理元数据，DataNode 存储实际数据块，默认块大小 128MB，通过副本机制（默认 3 副本）保证可靠性。
+
+MapReduce 把计算分为 Map 和 Reduce 两个阶段，Map 阶段把输入数据映射为键值对，Shuffle 阶段按 key 分区排序并传输，Reduce 阶段对相同 key 的值进行归并处理。该模型适合批处理，但不适合低延迟迭代计算。
+
+Spark 是基于内存计算的分布式计算框架，比 MapReduce 快很多，核心抽象是 RDD 弹性分布式数据集，支持 Transformation 惰性转换和 Action 行动操作。Spark SQL 提供 DataFrame 和 Dataset API，可用 SQL 语句查询结构化数据。
+
+Spark Streaming 把流式数据按时间片切分成微批次处理，Structured Streaming 提供基于 DataFrame 的流式 API。Spark MLlib 是机器学习库，包含分类、回归、聚类和特征处理算法。
+
+Hive 是基于 Hadoop 的数据仓库工具，把 SQL 语句转换为 MapReduce 或 Spark 任务执行，适合离线数据分析。HBase 是列式存储的分布式数据库，适合海量稀疏数据的随机读写。
+
+数据仓库面向主题、集成、相对稳定、反映历史变化，典型架构包含数据源、ETL、ODS、DWD、DWS 和应用层。ETL 指抽取 Extract、转换 Transform、加载 Load，是数据集成的核心环节。
+
+云计算提供服务模式 IaaS 基础设施即服务、PaaS 平台即服务和 SaaS 软件即服务。虚拟化是云计算的基础技术，容器相比虚拟机更轻量，Docker 是常见容器引擎，Kubernetes 用于容器编排。
+
+大数据技术与云计算课程的考核方式是课程项目，通常要求用 Spark 或 HDFS 完成一次数据处理并撰写实验报告。

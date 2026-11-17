@@ -1,0 +1,29 @@
+{
+  "student": {
+    "name": "莫仁条",
+    "student_id": "231617010438",
+    "major": "人工智能",
+    "school": "桂林电子科技大学北海校区"
+  },
+  "courses": [
+    {"name": "程序设计与问题求解", "credits": 3, "hours": 48, "teacher": "李文博", "exam": "闭卷笔试", "score": 95, "type": "专业必修", "semester": "2025-2026-1", "outline": "Python 基础语法、数据结构、算法设计与问题分解，侧重编程实践能力训练。"},
+    {"name": "高等数学", "credits": 4, "hours": 64, "teacher": "王海燕", "exam": "闭卷笔试", "score": 93, "type": "公共必修", "semester": "2025-2026-1", "outline": "极限、导数与微分、积分、多元函数微积分、级数与微分方程基础。"},
+    {"name": "计算机思维与人工智能", "credits": 2, "hours": 32, "teacher": "陈志强", "exam": "课程论文", "score": 92, "type": "公共必修", "semester": "2025-2026-1", "outline": "计算思维方法、算法与抽象、人工智能发展史与典型应用。"},
+    {"name": "马克思主义基本原理", "credits": 3, "hours": 48, "teacher": "刘芳", "exam": "开卷笔试", "score": 82, "type": "公共必修", "semester": "2025-2026-1", "outline": "哲学、政治经济学与科学社会主义基本原理。"},
+    {"name": "习近平新时代中国特色社会主义思想概论", "credits": 3, "hours": 48, "teacher": "赵明", "exam": "课程论文", "score": 80, "type": "公共必修", "semester": "2025-2026-2", "outline": "新时代中国特色社会主义理论体系与重大战略思想。"},
+    {"name": "线性代数B", "credits": 2, "hours": 32, "teacher": "周雪梅", "exam": "闭卷笔试", "score": 78, "type": "公共必修", "semester": "2025-2026-2", "outline": "行列式、矩阵、向量空间、线性方程组、特征值与二次型。"},
+    {"name": "自然语言处理", "credits": 3, "hours": 48, "teacher": "陈志强", "exam": "项目答辩", "score": 77, "type": "专业限选", "semester": "2025-2026-1", "outline": "分词、词向量、语言模型、序列标注、机器翻译与大语言模型应用。"},
+    {"name": "数据结构与算法", "credits": 3, "hours": 48, "teacher": "李文博", "exam": "闭卷笔试", "score": 70, "type": "专业必修", "semester": "2025-2026-2", "outline": "线性表、栈与队列、树与二叉树、图、排序与查找算法及复杂度分析。"},
+    {"name": "机器学习与模式识别", "credits": 3, "hours": 48, "teacher": "吴敏", "exam": "课程项目", "score": 68, "type": "专业限选", "semester": "2025-2026-2", "outline": "监督学习、无监督学习、特征工程、模型评估与常见分类聚类算法。"},
+    {"name": "大学英语1", "credits": 3, "hours": 48, "teacher": "黄丽", "exam": "闭卷笔试", "score": 64, "type": "公共必修", "semester": "2025-2026-1", "outline": "基础英语词汇、语法、阅读与写作训练。"},
+    {"name": "大学英语2", "credits": 2.5, "hours": 40, "teacher": "黄丽", "exam": "闭卷笔试", "score": 64, "type": "公共必修", "semester": "2025-2026-2", "outline": "英语听说读写综合训练与学术英语基础。"},
+    {"name": "中国近现代史纲要", "credits": 3, "hours": 48, "teacher": "孙立新", "exam": "开卷笔试", "score": 77, "type": "公共必修", "semester": "2025-2026-1", "outline": "中国近现代历史进程与重大事件。"},
+    {"name": "形势与政策1", "credits": 0.3, "hours": 4.8, "teacher": "赵明", "exam": "考查", "score": 87, "type": "公共必修", "semester": "2025-2026-2", "outline": "国内外形势与政策专题讲座。"},
+    {"name": "形势与政策2", "credits": 0.3, "hours": 4.8, "teacher": "赵明", "exam": "考查", "score": 88, "type": "公共必修", "semester": "2025-2026-1", "outline": "国内外形势与政策专题讲座。"},
+    {"name": "就业指导", "credits": 1, "hours": 16, "teacher": "郑华", "exam": "考查", "score": 85, "type": "公共必修", "semester": "2025-2026-2", "outline": "职业规划、简历撰写与面试技巧。"},
+    {"name": "大学生心理健康教育", "credits": 2, "hours": 32, "teacher": "林静", "exam": "考查", "score": 85, "type": "公共必修", "semester": "2025-2026-2", "outline": "心理健康知识、情绪管理与压力调适。"},
+    {"name": "人工智能系统开发实践", "credits": 2, "hours": "2周", "teacher": "吴敏", "exam": "实践考核", "score": "良", "type": "实践环节", "semester": "2025-2026-1", "outline": "AI 应用系统从需求到部署的完整的实践训练。"},
+    {"name": "大数据技术与云计算", "credits": 3, "hours": 48, "teacher": "吴敏", "exam": "课程项目", "score": "良", "type": "专业任选", "semester": "2025-2026-1", "outline": "Hadoop、Spark 生态与云计算平台基础。"},
+    {"name": "数据库原理及应用", "credits": 2, "hours": 32, "teacher": "周雪梅", "exam": "课程项目", "score": "中", "type": "专业任选", "semester": "2025-2026-2", "outline": "关系模型、SQL、范式、索引、事务与数据库设计。"}
+  ]
+}

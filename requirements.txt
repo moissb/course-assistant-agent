@@ -1,0 +1,11 @@
+# 当前实现：零第三方依赖，Python 3.9+ 标准库即可运行。
+# 以下为生产版技术栈（简历对应版本），仅在需要切换到框架实现时安装：
+langchain>=0.3.0
+langgraph>=0.2.0
+langchain-openai>=0.2.0
+faiss-cpu>=1.8.0
+sentence-transformers>=3.0.0
+fastapi>=0.115.0
+uvicorn>=0.30.0
+python-dotenv>=1.0.0
+pydantic>=2.0.0
